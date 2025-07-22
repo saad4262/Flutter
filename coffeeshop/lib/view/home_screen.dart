@@ -160,13 +160,25 @@ class HomeScreen extends StatelessWidget {
                   horizontal: mediaQuery.padding(15),
                 ),
 
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 0.75,
-                  children: List.generate(2, (index) => BuildCard()),
+                child: GridView.builder(
+                  itemCount: coffeeList.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.75,
+                  ),
+                  itemBuilder: (context, index) {
+                    return BuildCard(coffee: coffeeList[index]);
+                  },  
                 ),
+                // child: GridView.count(
+                //   crossAxisCount: 2,
+                //   crossAxisSpacing: 10,
+                //   mainAxisSpacing: 10,
+                //   childAspectRatio: 0.75,
+                //   children: List.generate(2, (index) => BuildCard()),
+                // ),
               ),
             ),
 
@@ -186,7 +198,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            // SizedBox(height: mediaQuery.height * 0.01),
             Card(
               elevation: 5,
               shape: RoundedRectangleBorder(
@@ -197,11 +208,10 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
-                    // Left: Image
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: SvgPicture.asset(
-                        'assets/images/coffe3.svg',
+                      child: Image.network(
+                        'https://images.pexels.com/photos/374885/pexels-photo-374885.jpeg',
                         height: 100,
                         width: 100,
                         fit: BoxFit.cover,
@@ -210,7 +220,6 @@ class HomeScreen extends StatelessWidget {
 
                     SizedBox(width: 12),
 
-                    // Right: Text and Label
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,3 +270,111 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+// // import 'package:flutter/material.dart';
+// // import 'package:get/get.dart';
+// // import 'package:coffeeshop/view/detail_screen.dart';
+// // import 'package:coffeeshop/viewmodel/animate_card.dart';
+
+// // class FirstScreen extends StatelessWidget {
+// //   final imageUrl =
+// //       'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg';
+// //   final controller = Get.put(AnimationControllerGetX());
+
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return Scaffold(
+// //       backgroundColor: Colors.white, // prevent flicker
+// //       body: Obx(() {
+// //         if (controller.navigate.value) return SizedBox.shrink();
+
+// //         return Stack(
+// //           children: [
+// //             AnimatedAlign(
+// //               duration: Duration(milliseconds: 900),
+// //               alignment: controller.animate.value
+// //                   ? Alignment.topCenter
+// //                   : Alignment.center,
+// //               curve: Curves.easeInOut,
+// //               child: AnimatedContainer(
+// //                 duration: Duration(milliseconds: 900),
+// //                 curve: Curves.easeInOut,
+// //                 height: controller.animate.value ? 300 : 120,
+// //                 width: controller.animate.value
+// //                     ? MediaQuery.of(context).size.width
+// //                     : 200,
+// //                 child: GestureDetector(
+// //                   onTap: () {
+// //                     controller.startAnimation(() {
+// //                       Future.delayed(Duration(milliseconds: 100), () {
+// //                         Navigator.of(context).push(
+// //                           PageRouteBuilder(
+// //                             transitionDuration: Duration(milliseconds: 400),
+// //                             pageBuilder: (_, __, ___) =>
+// //                                 DetailScreen(imageUrl: imageUrl),
+// //                             transitionsBuilder:
+// //                                 (_, animation, __, child) {
+// //                               return FadeTransition(
+// //                                 opacity: animation,
+// //                                 child: child,
+// //                               );
+// //                             },
+// //                           ),
+// //                         ).then((_) => controller.reset());
+// //                       });
+// //                     });
+// //                   },
+// //                   child: ClipRRect(
+// //                     borderRadius: BorderRadius.circular(16),
+// //                     child: Image.network(
+// //                       imageUrl,
+// //                       fit: BoxFit.cover,
+// //                     ),
+// //                   ),
+// //                 ),
+// //               ),
+// //             ),
+// //           ],
+// //         );
+// //       }),
+// //     );
+// //   }
+// // }
+
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'detail_screen.dart';
+
+// class FirstScreen extends StatelessWidget {
+//   final imageUrl =
+//       'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg';
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.white, // Important for seamless transition
+//       body: Center(
+//         child: GestureDetector(
+//           onTap: () {
+//             Get.to(() => DetailScreen(imageUrl: imageUrl),
+//               transition: Transition.fadeIn, // Optional fade for smoother effect
+//               duration: Duration(milliseconds: 1000), // Make it fast & clean
+//             );
+//           },
+//           child: Hero(
+//             tag: 'coffeeHero',
+//             child: ClipRRect(
+//               borderRadius: BorderRadius.circular(16),
+//               child: Image.network(
+//                 imageUrl,
+//                 width: 200,
+//                 height: 120,
+//                 fit: BoxFit.cover,
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

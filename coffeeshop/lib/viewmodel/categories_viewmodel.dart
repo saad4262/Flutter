@@ -16,3 +16,21 @@ class CategoriesOptions extends GetxController {
     selectedIndex.value = index;
   }
 }
+
+
+
+
+class SizeOptions extends GetxController {
+  RxList<String> categoriesList =
+      <String>[
+        'Small',
+        'Medium',
+        'Large',
+      ].obs;
+
+  var selectedIndex = 0.obs;
+
+   void selectCategory(int index) {
+    selectedIndex.value = index;
+  }
+}

@@ -1,9 +1,43 @@
+import 'package:coffeeshop/utils/app_images.dart';
 import 'package:coffeeshop/utils/media_query.dart';
+import 'package:coffeeshop/view/detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+final List<Map<String, dynamic>> coffeeList = [
+  {
+    "title": "Cappuccino",
+    "subtitle": "With Chocolate",
+    "price": 4.99,
+    "imageUrl":
+        "https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg",
+  },
+  {
+    "title": "Latte",
+    "subtitle": "With Vanilla",
+    "price": 5.49,
+    "imageUrl": "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
+  },
+  // {
+  //   "title": "Espresso",
+  //   "subtitle": "Strong Shot",
+  //   "price": 3.29,
+  //   "imageUrl":
+  //       "https://images.pexels.com/photos/952529/pexels-photo-952529.jpeg",
+  // },
+];
 
 class BuildCard extends StatelessWidget {
-  const BuildCard({super.key});
+  //  BuildCard({super.key});
+
+  final Map<String, dynamic> coffee;
+
+  const BuildCard({super.key, required this.coffee});
+
+  // final imageUrl =
+  //     'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg';
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +54,45 @@ class BuildCard extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                  child: SvgPicture.asset(
-                    'assets/images/coffe2.svg',
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(
+                      () => DetailScreen(coffee: coffee),
+                      transition:
+                          Transition
+                              .fadeIn, // Optional fade for smoother effect
+                      duration: Duration(
+                        milliseconds: 0,
+                      ), // Make it fast & clean
+                    );
+                    //  Navigator.of(context).push(
+                    //           PageRouteBuilder(
+                    //             transitionDuration: Duration(milliseconds: 1000),
+                    //             pageBuilder:
+                    //                 (context, animation, secondaryAnimation) =>
+                    //                     DetailScreen(imageUrl: imageUrl),
+                    //             transitionsBuilder: (
+                    //               context,
+                    //               animation,
+                    //               secondaryAnimation,
+                    //               child,
+                    //             ) {
+                    //               return child; // No default slide animation
+                    //             },
+                    //           ),
+                    //         );
+                  },
+                  child: Hero(
+                    tag: coffee['title'],
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.network(
+                        coffee['imageUrl'],
+                        width: 200,
+                        height: 120,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -56,7 +122,7 @@ class BuildCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Cappuccino',
+                  coffee['title'],
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -65,7 +131,7 @@ class BuildCard extends StatelessWidget {
                 ),
                 // SizedBox(height: mediaQuery.height * 0.02),
                 Text(
-                  'With Chocolate',
+                  coffee['subtitle'],
                   style: TextStyle(
                     fontSize: mediaQuery.font(10),
                     color: Colors.grey[600],
@@ -76,7 +142,7 @@ class BuildCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '\$4.99',
+                      '\$${coffee['price']}',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
