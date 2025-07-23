@@ -2,6 +2,7 @@ import 'package:coffeeshop/utils/media_query.dart';
 import 'package:coffeeshop/viewmodel/button_animation.dart';
 import 'package:coffeeshop/viewmodel/categories_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:coffeeshop/viewmodel/animate_card.dart';
@@ -66,12 +67,11 @@ class _DetailScreenState extends State<DetailScreen>
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Stack(
         children: [
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.0, end: 1.0),
-            duration: const Duration(milliseconds: 700),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
             builder: (context, value, child) {
               final double topPosition =
@@ -85,7 +85,7 @@ class _DetailScreenState extends State<DetailScreen>
                 child: Transform.scale(
                   scale: scale,
                   child: Hero(
-                    tag: coffee['title'], // Use same tag as in card
+                    tag: coffee['title'],
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Stack(
@@ -241,7 +241,10 @@ class _DetailScreenState extends State<DetailScreen>
                                 Icon(Icons.coffee, color: Color(0xff846046)),
                                 Text(
                                   "Coffee",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ],
                             ),
@@ -261,7 +264,10 @@ class _DetailScreenState extends State<DetailScreen>
                                 ),
                                 Text(
                                   "Chocolate",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ],
                             ),
@@ -276,7 +282,10 @@ class _DetailScreenState extends State<DetailScreen>
 
                             Text(
                               "Medium",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
                           ],
                         ),
@@ -403,9 +412,7 @@ class _DetailScreenState extends State<DetailScreen>
                             alignment: Alignment.center,
                             children: [
                               Align(
-                                alignment:
-                                    Alignment
-                                        .centerLeft, // 👈 this makes fill grow from left
+                                alignment: Alignment.centerLeft,
                                 child: AnimatedContainer(
                                   duration: Duration(milliseconds: 100),
                                   width: fillWidth,
@@ -422,19 +429,14 @@ class _DetailScreenState extends State<DetailScreen>
                                   ),
                                 ),
                               ),
-
-                              // 👇 Tick or Button
                               if (showTick)
                                 Icon(Icons.check, color: Colors.white, size: 30)
                               else if (!isAnimating)
                                 TextButton(
                                   onPressed: () {
                                     cartController.animateAddToCart(() {
-                                      Get.snackbar(
-                                        "Success",
-                                        "Item added to cart",
-                                        backgroundColor: Color(0xff846046),
-                                        colorText: Colors.white,
+                                      cartController.showAnimatedSnackbar(
+                                        cartController,
                                       );
                                     }, fullWidth);
                                   },

@@ -3,6 +3,7 @@ import 'package:coffeeshop/utils/card.dart';
 import 'package:coffeeshop/utils/custom_textfield.dart';
 import 'package:coffeeshop/utils/media_query.dart';
 import 'package:coffeeshop/viewmodel/categories_viewmodel.dart';
+import 'package:coffeeshop/viewmodel/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -40,6 +41,17 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  Obx(() {
+                    final themeController = Get.find<ThemeController>();
+                    return IconButton(
+                      icon: Icon(
+                        themeController.isDarkMode.value
+                            ? Icons.light_mode
+                            : Icons.dark_mode_outlined,
+                      ),
+                      onPressed: () => themeController.toggleTheme(),
+                    );
+                  }),
                   Stack(
                     children: [
                       Icon(Icons.notifications, size: 25),
@@ -130,7 +142,7 @@ class HomeScreen extends StatelessWidget {
                               color:
                                   isSelected
                                       ? Color(0xff846046)
-                                      : Colors.grey[10],
+                                      : Colors.grey[50],
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
@@ -170,7 +182,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   itemBuilder: (context, index) {
                     return BuildCard(coffee: coffeeList[index]);
-                  },  
+                  },
                 ),
                 // child: GridView.count(
                 //   crossAxisCount: 2,
@@ -215,6 +227,38 @@ class HomeScreen extends StatelessWidget {
                         height: 100,
                         width: 100,
                         fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+
+                          return SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 30,
+                                  width: 30,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Color(0xff846046),
+                                    ), // Stylish brown
+                                    strokeWidth: 5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            height: 100,
+                            width: 100,
+                            color: Colors.brown.shade100,
+                            alignment: Alignment.center,
+                            child: const Icon(Icons.error, color: Colors.brown),
+                          );
+                        },
                       ),
                     ),
 

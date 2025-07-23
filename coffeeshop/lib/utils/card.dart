@@ -12,21 +12,15 @@ final List<Map<String, dynamic>> coffeeList = [
     "subtitle": "With Chocolate",
     "price": 4.99,
     "imageUrl":
-        "https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg",
+        'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg',
   },
   {
     "title": "Latte",
     "subtitle": "With Vanilla",
     "price": 5.49,
-    "imageUrl": "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
+    "imageUrl":
+        'https://images.pexels.com/photos/585753/pexels-photo-585753.jpeg',
   },
-  // {
-  //   "title": "Espresso",
-  //   "subtitle": "Strong Shot",
-  //   "price": 3.29,
-  //   "imageUrl":
-  //       "https://images.pexels.com/photos/952529/pexels-photo-952529.jpeg",
-  // },
 ];
 
 class BuildCard extends StatelessWidget {
@@ -88,9 +82,42 @@ class BuildCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       child: Image.network(
                         coffee['imageUrl'],
-                        width: 200,
+
                         height: 120,
+                        width: 200,
                         fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+
+                          return SizedBox(
+                            height: 120,
+                            width: 200,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 30,
+                                  width: 30,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Color(0xff846046),
+                                    ), // Stylish brown
+                                    strokeWidth: 5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            height: 120,
+                            width: 200,
+                            color: Colors.brown.shade100,
+                            alignment: Alignment.center,
+                            child: const Icon(Icons.error, color: Colors.brown),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -126,7 +153,7 @@ class BuildCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.brown[800],
+                    color: Color(0xff846046),
                   ),
                 ),
                 // SizedBox(height: mediaQuery.height * 0.02),
